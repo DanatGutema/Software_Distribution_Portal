@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "File" ALTER COLUMN "machineMode" DROP NOT NULL,
+ALTER COLUMN "machineType" DROP NOT NULL;

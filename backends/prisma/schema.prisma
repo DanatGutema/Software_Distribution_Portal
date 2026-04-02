@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  fullname  String
+  email     String   @unique
+  password  String
+  contact   String? // Optional use ? if you want to leave it blank
+  role      Int      @default(0) // 0=user, 1=manager, 2=admin
+  status    String   @default("pending") // pending or approved
+  createdAt DateTime @default(now())
+
+  // 🔁 reverse relation
+  files File[]
+}
+
+model File {
+  id       Int    @id @default(autoincrement())
+  filename String
+  path     String
+  keywords String
+
+  //Relations IDs only
+  bankId Int
+  bank   Bank @relation(fields: [bankId], references: [id])
+
+  machineTypeId Int
+  machineType   MachineType @relation(fields: [machineTypeId], references: [id])
+
+  machineModeId Int
+  machineMode   MachineMode @relation(fields: [machineModeId], references: [id])
+
+  uploadedById Int
+  uploadedBy   User @relation(fields: [uploadedById], references: [id])
+
+  operatingSystem String
+ 
+
+  swdId Int?
+  swd   SWD? @relation(fields: [swdId], references: [id])
+
+
+  advanceNdcId Int?
+  advanceNdc   AdvancedNDC? @relation(fields: [advanceNdcId], references: [id])
+
+
+  xfsId Int?
+  xfs   XFS? @relation(fields: [xfsId], references: [id])
+
+
+  unifiedAgentId Int?
+  unifiedAgent   UnifiedAgent? @relation(fields: [unifiedAgentId], references: [id])
+
+
+
+  notes           String
+  createdAt       DateTime @default(now())
+
+  status    String   @default("active") // active or archived
+
+  @@unique([filename, bankId])
+}
+
+model MachineType {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  // ✅ Relation to MachineModes (1 → many)
+  modes MachineMode[]
+
+  // 🔁 one type → many files
+  files File[]
+}
+
+model MachineMode {
+  id            Int         @id @default(autoincrement())
+  name          String
+  machineTypeId Int
+  machineType   MachineType @relation(fields: [machineTypeId], references: [id])
+  createdAt     DateTime    @default(now())
+
+  // 🔁 one mode → many files
+  files File[]
+}
+
+model Bank {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  files     File[]
+}
+
+
+model AdvancedNDC {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  remark String @default("")
+  createdAt DateTime @default(now())
+  files     File[]
+}
+
+
+model SWD {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  remark String @default("")
+  createdAt DateTime @default(now())
+  files     File[]
+}
+
+
+model UnifiedAgent {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  remark String @default("")
+  createdAt DateTime @default(now())
+  files     File[]
+}
+
+
+model XFS {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  remark String @default("")
+  createdAt DateTime @default(now())
+  files     File[]
+}
