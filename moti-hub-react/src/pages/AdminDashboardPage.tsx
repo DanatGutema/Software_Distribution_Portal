@@ -361,47 +361,7 @@ const AdminDashboard: React.FC = () => {
 {/* 
 =======================================to activate the account======= */}
 
-              {normalizedStatus === "inactive" && (
-
-
-                    <button
-                      className="bg-gray-500 text-white px-2 py-1 rounded hover:bg-gray-600"
-                      onClick={() => handleActivate(user.id)}
-                    >
-                      active acc
-                    </button>
-                  )}
-
-
-
-    {
-                    user.role === 2 && (
-
-                  <button
-                    // style={{ backgroundColor: "#242481" }}
-                    className="bg-blue-900 text-white px-2 py-1 rounded hover:bg-blue-800"
-                    onClick={() => handlePromote(user, 1)}
-                  >
-                    dePromote to Manager
-                  </button>
-                    )
-                  }
-
-
-
-                      {
-                    user.role === 1 && (
-
-                  <button
-                    // style={{ backgroundColor: "#242481" }}
-                    className="bg-blue-900 text-white px-2 py-1 rounded hover:bg-blue-800"
-                    onClick={() => handlePromote(user, 0)}
-                  >
-                    dePromote to User
-                  </button>
-                    )
-                  }
-
+              
 {/* =======================================show the delete button when the user is pending only==== */}
 
 
